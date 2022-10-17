@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <a href="/">< Назад</a>
+    <h2 th:text="${post.title}"></h2>
+    <p th:text="${post.fish.name}"></p>
+    <p th:text="${post.full_text}"></p>
+
+    <hr/>
+    <form>
+        <p>Написать комментарий</p>
+        <input type="hidden" th:value="${post.id}" name="post_id">
+        <textarea name="text"></textarea><br>
+        <input type="submit" formaction="/createComment" formmethod="post">
+    </form>
+
+    <form th:action="@{/selectedPost}">
+        <input type="hidden" name="id" th:value="${post.id}">
+        <input placeholder="текст комментария" name="text">
+        <input type="checkbox" name="exactSearch"><label> Точный поиск</label>
+        <input value="Поиск" formmethod="get" type="submit">
+    </form>
+
+    <hr/>
+    <div th:each="comment : ${comments}">
+        <p th:text="${comment.text}"></p>
+        <span th:text="${comment.dateOfPost}"></span>
+        <hr/>
+    </div>
+
+
+
+</body>
+</html>

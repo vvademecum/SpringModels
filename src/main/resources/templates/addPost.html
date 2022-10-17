@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="/">< Назад</a>
+<form>
+  <p>Заголовок</p>
+    <input type="text" name="title"/>
+    <p>Рыба</p>
+    <select name="fish_id"><div th:each="fish : ${fishes}">
+        <option th:value="${fish.id}" th:text="${fish.name}"/>
+    </div></select>
+    <button formaction="/addFish" formmethod="get">+</button>
+  <p>Анонс</p>
+    <input type="text" name="anons"/>
+  <p>Содержание</p>
+    <textarea name="full_text"></textarea>
+  <p><input type="submit" formaction="/createPost" formmethod="post" value="Создать статью"></p>
+</form>
+</body>
+</html>

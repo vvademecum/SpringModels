@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="/addPost">< Назад</a>
+<form>
+  <p>Имя</p>
+    <input type="text" name="name"/>
+  <p>Средний вес</p>
+    <input type="text" name="averageWeight"/>
+  <p>IQ</p>
+    <input type="text" name="iq"/><br>
+  <input type="checkbox" name="redBook"><label>Вымирающий вид</label>
+  <p>Цвет</p>
+    <input type="text" name="color"/>
+    <p><input type="submit" formaction="/createFish" formmethod="post" value="Добавить рыбу"></p>
+</form>
+</body>
+</html>

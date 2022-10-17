@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="/addPost">Добавить статью</a>
+<a href="/fishes">Посмотреть рыб)</a>
+<form>
+    <input placeholder="Заголовок статьи" name="title">
+    <input type="checkbox" name="exactSearch"><label> Точный поиск</label>
+    <input value="Поиск" formmethod="get" formaction="/" type="submit">
+</form>
+<p><h3>Список статей:</h3></p>
+<div th:each="post : ${posts}">
+    <a th:href="@{/selectedPost?id={id}(id=${post.id})}">
+        <h3 th:text="${post.title}"></h3>
+    </a>
+    <p th:text="${post.anons}"></p>
+    <p th:text="${post.fish.name}"></p>
+    <hr/>
+</div>
+
+</body>
+</html>
