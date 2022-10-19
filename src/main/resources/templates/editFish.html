@@ -32,30 +32,37 @@
 </nav>
 
 <content class="container d-flex flex-column align-items-right mt-4">
-    <a class="btn btn-outline-danger" href="/addPost">< Назад</a>
+    <a class="btn btn-outline-danger" th:href="@{/selectedFish?id={id}(id=${fish.id})}">< Назад</a>
     <form>
         <div class="form-group">
             <label class="mt-3 font-weight-bold" for="name">Имя:</label>
-            <input type="text" name="name" id="name" class="form-control" placeholder="Имя"/>
+            <input type="text" name="name" id="name" class="form-control" placeholder="Имя" th:value="${fish.name}"/>
         </div>
+
         <div class="form-group">
             <label class="mt-2 font-weight-bold" for="averageWeight">Средний вес:</label>
-            <input type="text" name="averageWeight" id="averageWeight" class="form-control" placeholder="Средний вес"/>
+            <input type="text" name="averageWeight" id="averageWeight" class="form-control" placeholder="Средний вес"
+                   th:value="${fish.averageWeight}"/>
         </div>
+
         <div class="form-group mb-0 pb-0">
             <label class="mt-2 mb-0 font-weight-bold" for="iq">IQ:</label>
-            <input type="text" name="iq" id="iq" class="form-control" placeholder="IQ"/><br>
+            <input type="text" name="iq" id="iq" class="form-control" placeholder="IQ" th:value="${fish.iq}"/>
         </div>
-        <div class="custom-control custom-checkbox mr-sm-2 ml-2">
-            <input type="checkbox" name="redBook" class="custom-control-input" id="redBook">
+
+        <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-3">
+            <input type="checkbox" name="redBook" class="custom-control-input" id="redBook"
+                   th:checked="${fish.redBook}">
             <label class="custom-control-label" for="redBook">Вымирающий вид</label>
         </div>
+
         <div class="form-group">
             <label class="mt-3 font-weight-bold" for="color">Цвет:</label>
-            <input type="text" name="color" id="color" class="form-control" placeholder="Цвет"/>
+            <input type="text" name="color" id="color" class="form-control" placeholder="Цвет"
+                   th:value="${fish.color}"/>
         </div>
-        <p><input class="btn btn-primary" type="submit" formaction="/createFish" formmethod="post"
-                  value="Добавить рыбу"></p>
+        <input type="hidden" name="id" th:value="${fish.id}"/>
+        <p><input class="btn btn-primary" type="submit" formaction="/editFish" formmethod="post" value="Сохранить"></p>
     </form>
 </content>
 </body>

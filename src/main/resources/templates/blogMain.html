@@ -3,24 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<a href="/addPost">Добавить статью</a>
-<a href="/fishes">Посмотреть рыб)</a>
-<form>
-    <input placeholder="Заголовок статьи" name="title">
-    <input type="checkbox" name="exactSearch"><label> Точный поиск</label>
-    <input value="Поиск" formmethod="get" formaction="/" type="submit">
-</form>
-<p><h3>Список статей:</h3></p>
+
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        FishBlog
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/addPost">Добавить статью</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/fishes">Рыбы)</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" name="title" placeholder="Заголовок статьи"
+                   aria-label="Search">
+            <div class="col-auto my-1">
+                <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing" name="exactSearch">
+                    <label class="custom-control-label" for="customControlAutosizing">Точный поиск</label>
+                </div>
+            </div>
+            <div class="col-sm-auto col-form-label">
+            </div>
+            <button class="btn btn-outline-success my-2 my-sm-0" formmethod="get" formaction="/" type="submit">Поиск
+            </button>
+        </form>
+    </div>
+</nav>
+
+<p><h4 class="display-8 p-3">Список статей:</h4></p>
+
+<content class="d-flex p-2 ml-2 flex-column">
 <div th:each="post : ${posts}">
     <a th:href="@{/selectedPost?id={id}(id=${post.id})}">
-        <h3 th:text="${post.title}"></h3>
+        <h4 class="text-info" th:text="${post.title}"></h4>
     </a>
     <p th:text="${post.anons}"></p>
-    <p th:text="${post.fish.name}"></p>
+    <p class="lead fs-7" th:text="${post.fish.name}"></p>
     <hr/>
 </div>
+</content>
 
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>

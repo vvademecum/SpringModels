@@ -57,6 +57,48 @@ public class postController {
         return "addPost";
     }
 
+    @PostMapping("/post/editPostPage")
+    public String toEditPostPage(@RequestParam long id, Model model){
+
+        Iterable<Fish> fishes = fishRepository.findAll();
+        model.addAttribute("fishes", fishes);
+
+        Post post = postRepository.findById(id).get();
+        model.addAttribute("post", post);
+
+        return "editPost";
+    }
+
+    @PostMapping("/editPost")
+    public String toPostAfterEdit(@RequestParam long id,
+                                  @RequestParam String title,
+                                  @RequestParam String anons,
+                                  @RequestParam String full_text,
+                                  @RequestParam Long fish_id, Model model){
+
+        Post post = postRepository.findById(id).get();
+        Fish fish = fishRepository.findById(fish_id).get();
+
+        post.setTitle(title);
+        post.setAnons(anons);
+        post.setFish(fish);
+        post.setFull_text(full_text);
+
+        postRepository.save(post);
+
+        return "redirect:/selectedPost?id="+String.valueOf(id);
+    }
+
+    @PostMapping("/post/delete")
+    public String deletePost(@RequestParam long id,
+                             Model model){
+
+        Post post = postRepository.findById(id).get();
+        postRepository.delete(post);
+
+        return "redirect:/";
+    }
+
     @PostMapping("/createPost")
     public String toMainAfterCreate(@RequestParam String title,
                                     @RequestParam String anons,
@@ -69,5 +111,4 @@ public class postController {
 
         return "redirect:/";
     }
-
 }

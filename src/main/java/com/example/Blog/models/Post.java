@@ -1,6 +1,5 @@
 package com.example.Blog.models;
 
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,6 @@ public class Post {
     private int views;
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList;
-
 
     public Long getId() {
         return id;

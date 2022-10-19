@@ -16,14 +16,13 @@
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="/">Главная</a>
             </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="/addPost">Добавить статью <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link" href="/addPost">Добавить статью</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/fishes">Рыбы)</a>
@@ -32,34 +31,37 @@
     </div>
 </nav>
 
-
 <content class="container d-flex flex-column align-items-right mt-4">
+
+    <a class="btn btn-outline-danger" th:href="@{/selectedPost?id={id}(id=${post.id})}">< Назад</a>
     <form>
         <div class="form-group">
             <label class="mt-4 font-weight-bold" for="text">Заголовок:</label>
-            <input type="text" name="title" class="form-control" id="text"
-                   placeholder="Заголовок"/>
+            <input type="text" id="text" class="form-control" name="title" th:value="${post.title}"/>
         </div>
         <div class="form-group">
             <label class="font-weight-bold" for="riba">Рыба:</label>
-            <select name="fish_id" class="form-control mb-2" id="riba">
+            <select id="riba" class="form-control mb-2" name="fish_id">
                 <div th:each="fish : ${fishes}">
-                    <option th:value="${fish.id}" th:text="${fish.name}"/>
+                    <option th:selected="${fish.id == post.fish.id}" th:value="${fish.id}" th:text="${fish.name}"/>
                 </div>
             </select>
-            <button formaction="/addFish" formmethod="get" class="form-control btn btn-outline-success">Добавить новую рыбу</button>
+            <button formaction="/addFish" formmethod="get" class="form-control btn btn-outline-success">Добавить новую
+                рыбу
+            </button>
         </div>
         <div class="form-group">
             <label class="font-weight-bold" for="anons">Анонс:</label>
             <input type="text" name="anons" class="form-control" id="anons"
-                   placeholder="Анонс"/>
+                   placeholder="Анонс" th:value="${post.anons}"/>
         </div>
         <div class="form-group">
             <label class="font-weight-bold" for="full_text">Содержание:</label>
-            <textarea type="text" name="full_text" class="form-control" id="full_text"
-                      placeholder="Содержание"></textarea>
+            <textarea name="full_text" class="form-control" id="full_text"
+                      placeholder="Содержание" th:text="${post.full_text}"></textarea>
         </div>
-        <p><input class="btn btn-primary" type="submit" formaction="/createPost" formmethod="post" value="Создать статью"></p>
+        <input type="hidden" name="id" th:value="${post.id}"/>
+        <p><input class="btn btn-primary" type="submit" formaction="/editPost" formmethod="post" value="Сохранить"></p>
     </form>
 </content>
 </body>

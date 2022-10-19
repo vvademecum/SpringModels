@@ -3,21 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-<a href="/">< Назад</a>
-<form>
-    <input placeholder="Имя рыбы" name="nameFish">
-    <input type="checkbox" name="exactSearch"><label> Точный поиск</label>
-    <input value="Поиск" formmethod="get" formaction="/fishes" type="submit">
-</form>
-<p><h3>Список рыб:</h3></p>
-<div th:each="fish : ${fishes}">
-    <a th:href="@{/selectedFish?id={id}(id=${fish.id})}">
-        <h3 th:text="${fish.name}"></h3>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        FishBlog
     </a>
-    <p th:text="${fish.color}"></p>
-    <hr/>
-</div>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/addPost">Добавить статью</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/fishes">Рыбы) <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" name="nameFish" placeholder="Имя рыбы"
+                   aria-label="Search">
+            <div class="col-auto my-1">
+                <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing" name="exactSearch">
+                    <label class="custom-control-label" for="customControlAutosizing">Точный поиск</label>
+                </div>
+            </div>
+            <div class="col-sm-auto col-form-label">
+            </div>
+            <button class="btn btn-outline-success my-2 my-sm-0" formmethod="get" formaction="/fishes" type="submit">
+                Поиск
+            </button>
+        </form>
+    </div>
+</nav>
+
+<!--    <a href="/" class="btn btn-outline-danger p-3">< Назад</a>-->
+
+<p><h4 class="display-8 p-3">Список рыб:</h4></p>
+<content class="d-flex p-2 ml-2 flex-column">
+    <div th:each="fish : ${fishes}">
+        <a th:href="@{/selectedFish?id={id}(id=${fish.id})}">
+            <h4 class="text-info" th:text="${fish.name}"></h4>
+        </a>
+<!--        <p class="text-info" th:text="${fish.color}"></p>-->
+        <hr/>
+    </div>
+</content>
 </body>
 </html>

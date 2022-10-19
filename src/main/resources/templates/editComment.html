@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,6 +7,7 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
+
 <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
     <a class="navbar-brand" href="/">
         <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -32,34 +33,19 @@
     </div>
 </nav>
 
-<content class="container d-flex flex-column align-items-right mt-4">
-    <a class="btn btn-outline-danger" href="/fishes">< Назад</a>
-    <h2 class="pt-4" th:text="${fish.name}"></h2>
-    <p class="font-weight-bold lead text-danger" th:if="${fish.redBook}">
-        <label>Вымирающий вид</label>
-    </p>
-    <p class="font-weight-bold">Средний вес:
-        <label class="font-weight-normal" th:text="${fish.averageWeight}"></label>
-    </p>
-    <p class="font-weight-bold">IQ:
-        <label class="font-weight-normal" th:text="${fish.iq}"></label>
-    </p>
-    <p class="font-weight-bold">Цвет:
-        <label class="font-weight-normal" th:text="${fish.color}"></label>
-    </p>
 
-    <div class="btn-group">
-        <form th:action="@{/fish/editFishPage}" method="post" class="pr-3">
-            <input type="hidden" th:value="${fish.id}" name="id">
-            <input value="Редактировать" type="submit" class="btn btn-outline-primary">
-        </form>
-        <form th:action="@{/fish/delete}" method="post">
-            <input type="hidden" th:value="${fish.id}" name="id">
-            <input value="Удалить" type="submit" class="btn btn-outline-danger">
-        </form>
-    </div>
+<content class="d-flex p-2 ml-2 flex-column">
+    <a class="btn btn-outline-danger" th:href="@{/selectedPost?id={id}(id=${comment.post.id})}">< Назад</a>
 
-
+    <form class="mt-3">
+        <label class="font-weight-bold" for="full_text">Текст комментария:</label>
+        <textarea placeholder="Текст комментария" id="full_text" class="form-control mb-2" name="text"
+                  th:text="${comment.text}"/>
+        <input type="hidden" th:value="${comment.id}" name="id">
+        <p><input type="submit" formaction="/editComment" formmethod="post" value="Сохранить" class="btn btn-primary">
+        </p>
+    </form>
 </content>
+
 </body>
 </html>

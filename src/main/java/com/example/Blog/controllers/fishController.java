@@ -32,8 +32,6 @@ public class fishController {
     public String toFishes(@RequestParam(required = false) String nameFish,
                            @RequestParam(required = false) Boolean exactSearch, Model model) {
 
-//        Iterable<Fish> fishes = fishRepository.findAll();
-
         Iterable<Fish> fish = new ArrayList<Fish>();
 
         if(nameFish != null && nameFish != "") {
@@ -50,19 +48,57 @@ public class fishController {
     }
 
     @GetMapping("/selectedFish")
-    public String getOnePost(@RequestParam(required = false) String text,
+    public String getOneFish(@RequestParam(required = false) String text,
                              @RequestParam long id, Model model) {
 
         Fish fish = fishRepository.findById(id).get();
-
-
         model.addAttribute("fish", fish);
 
         return "fish";
     }
 
+    @PostMapping("/fish/editFishPage")
+    public String toEditPostPage(@RequestParam long id, Model model){
+
+        Fish fish = fishRepository.findById(id).get();
+        model.addAttribute("fish", fish);
+
+        return "editFish";
+    }
+
+    @PostMapping("/editFish")
+    public String toPostAfterEdit(@RequestParam long id,
+                              @RequestParam String name,
+                              @RequestParam double averageWeight,
+                              @RequestParam int iq,
+                              @RequestParam(required = false) Boolean redBook,
+                              @RequestParam String color, Model model){
+
+        Fish fish = fishRepository.findById(id).get();
+
+        fish.setName(name);
+        fish.setAverageWeight(averageWeight);
+        fish.setIq(iq);
+        fish.setRedBook(redBook == null ? false : redBook);
+        fish.setColor(color);
+
+        fishRepository.save(fish);
+
+        return "redirect:/selectedFish?id="+String.valueOf(id);
+    }
+
+    @PostMapping("/fish/delete")
+    public String deletePost(@RequestParam long id,
+                             Model model){
+
+        Fish fish = fishRepository.findById(id).get();
+        fishRepository.delete(fish);
+
+        return "redirect:/fishes";
+    }
+
     @PostMapping("/createFish")
-    public String toMainAfterCreate(@RequestParam String name,
+    public String toMainAfterCreateFish(@RequestParam String name,
                                     @RequestParam double averageWeight,
                                     @RequestParam int iq,
                                     @RequestParam(required = false) Boolean redBook,

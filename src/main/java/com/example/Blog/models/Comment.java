@@ -5,14 +5,17 @@ import java.util.Date;
 
 @Entity
 public class Comment {
-    public Comment(String text, Date dateOfPost, int likes, int views, Post post){
+    public Comment(String text, Date dateOfPost, int likes, int views, Post post) {
         this.text = text;
         this.dateOfPost = dateOfPost;
         this.likes = likes;
         this.views = views;
         this.post = post;
     }
-    public Comment(){}
+
+    public Comment() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -24,7 +27,7 @@ public class Comment {
     private int views;
 
     @ManyToOne
-    @JoinColumn(name="post_id", referencedColumnName = "id")
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
     public long getId() {

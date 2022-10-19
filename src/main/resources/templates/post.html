@@ -3,36 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <a href="/">< Назад</a>
-    <h2 th:text="${post.title}"></h2>
-    <p th:text="${post.fish.name}"></p>
-    <p th:text="${post.full_text}"></p>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        FishBlog
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/addPost">Добавить статью</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/fishes">Рыбы)</a>
+            </li>
+        </ul>
+        <form th:action="@{/selectedPost}" class="form-inline my-2 my-lg-0">
+            <input type="hidden" name="id" th:value="${post.id}">
+            <input class="form-control mr-sm-2" type="search" name="text" placeholder="Комментарий"
+                   aria-label="Search">
+            <div class="col-auto my-1">
+                <div class="custom-control custom-checkbox mr-sm-2">
+                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing" name="exactSearch">
+                    <label class="custom-control-label" for="customControlAutosizing">Точный поиск</label>
+                </div>
+            </div>
+            <div class="col-sm-auto col-form-label">
+            </div>
+            <button class="btn btn-outline-success my-2 my-sm-0" formmethod="get" type="submit">Поиск
+            </button>
+        </form>
+    </div>
+</nav>
+
+
+<content class="container d-flex flex-column align-items-right mt-4">
+    <a href="/" class="btn btn-outline-danger">< Назад</a>
+    <h2 class="pt-4" th:text="${post.title}"></h2>
+    <p class="font-weight-bold">Про рыбу:
+        <label class="lead fs-7" th:text="${post.fish.name}"></label>
+    </p>
+    <p class="font-weight-bold">Текст поста:<br>
+        <label class="font-weight-normal" th:text="${post.full_text}"></label>
+    </p>
+
+    <div class="btn-group">
+        <form th:action="@{/post/editPostPage}" method="post" class="pr-3">
+            <input type="hidden" th:value="${post.id}" name="id">
+            <input value="Редактировать" type="submit" class="btn btn-outline-primary">
+        </form>
+
+        <form th:action="@{/post/delete}" method="post">
+            <input type="hidden" th:value="${post.id}" name="id">
+            <input value="Удалить" type="submit" class="btn btn-outline-danger">
+        </form>
+    </div>
 
     <hr/>
     <form>
-        <p>Написать комментарий</p>
         <input type="hidden" th:value="${post.id}" name="post_id">
-        <textarea name="text"></textarea><br>
-        <input type="submit" formaction="/createComment" formmethod="post">
+        <textarea placeholder="Текст комментария" class="form-control" name="text"></textarea><br>
+        <input type="submit" formaction="/createComment" formmethod="post" class="btn btn-primary">
     </form>
 
-    <form th:action="@{/selectedPost}">
-        <input type="hidden" name="id" th:value="${post.id}">
-        <input placeholder="текст комментария" name="text">
-        <input type="checkbox" name="exactSearch"><label> Точный поиск</label>
-        <input value="Поиск" formmethod="get" type="submit">
-    </form>
 
     <hr/>
+    <p class="font-weight-bold">Комментарии: </p>
     <div th:each="comment : ${comments}">
         <p th:text="${comment.text}"></p>
-        <span th:text="${comment.dateOfPost}"></span>
+        <span class="font-weight-light" th:text="${comment.dateOfPost}"></span>
+        <br>
+        <div class="btn-group">
+            <form action="/comment/editCommentPage" method="post" class="pr-3">
+                <input type="hidden" name="id_comment" th:value="${comment.id}">
+                <input value="Редактировать" type="submit" class="btn btn-outline-primary">
+            </form>
+            <form action="comment/delete" method="post">
+                <input type="hidden" name="comment_id" th:value="${comment.id}">
+                <input type="hidden" name="post_id" th:value="${post.id}">
+                <input value="Удалить" type="submit" class="btn btn-outline-danger">
+            </form>
+        </div>
+
         <hr/>
     </div>
+</content>
 
-
-
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>
