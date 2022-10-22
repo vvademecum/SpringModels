@@ -1,6 +1,9 @@
 package com.example.Blog.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,10 +16,20 @@ public class Post {
         this.fish = fish;
     }
     public Post() { }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String title, anons, full_text;
+
+    @NotBlank(message = "Поле не должно быть пустым")
+    @Size(min = 10, max = 200, message = "Поле должно иметь размер от 10 до 200 символов")
+    private String title;
+    @NotBlank(message = "Поле не должно быть пустым")
+    @Size(min = 10, max = 200, message = "Поле должно иметь размер от 10 до 200 символов")
+    private String anons;
+
+    @NotBlank(message = "Поле не должно быть пустым")
+    private String full_text;
     @ManyToOne
     @JoinColumn(name = "fish_id", referencedColumnName = "id")
     private Fish fish;

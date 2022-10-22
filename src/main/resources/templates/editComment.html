@@ -37,12 +37,26 @@
 <content class="d-flex p-2 ml-2 flex-column">
     <a class="btn btn-outline-danger" th:href="@{/selectedPost?id={id}(id=${comment.post.id})}">< Назад</a>
 
-    <form class="mt-3">
+    <form class="mt-3" th:object="${comment}" enctype="multipart/form-data">
+        <input type="hidden" th:value="${comment.id}" th:field="*{id}">
+        <input type="hidden" th:value="${comment.post}" th:field="*{post}">
         <label class="font-weight-bold" for="full_text">Текст комментария:</label>
-        <textarea placeholder="Текст комментария" id="full_text" class="form-control mb-2" name="text"
+        <textarea placeholder="Текст комментария" id="full_text" class="form-control mb-2"
+                  th:field="*{text}"
                   th:text="${comment.text}"/>
-        <input type="hidden" th:value="${comment.id}" name="id">
-        <p><input type="submit" formaction="/editComment" formmethod="post" value="Сохранить" class="btn btn-primary">
+        <span class="error text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span>
+
+
+        <div th:if="${comment.photo != null}" class="ml-5 mr-5 mb-2 pl-5 pr-5">
+            <p class="align-right my-auto">
+                <img th:src="data:image/jpeg;base64,${comment.getNormalPhoto}" class="rounded img-fluid" alt="...">
+            </p>
+        </div>
+        <input type="file" name="photo" value="выбрать изображение"
+               class="btn btn-outline-primary form-control mb-2">
+        <!--            <input type="submit" formmethod="post">-->
+
+        <p><input type="submit" formaction="/comment/edit" formmethod="post" value="Сохранить" class="btn btn-primary">
         </p>
     </form>
 </content>

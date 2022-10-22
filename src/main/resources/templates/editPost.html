@@ -34,10 +34,11 @@
 <content class="container d-flex flex-column align-items-right mt-4">
 
     <a class="btn btn-outline-danger" th:href="@{/selectedPost?id={id}(id=${post.id})}">< Назад</a>
-    <form>
+    <form th:object="${post}">
         <div class="form-group">
             <label class="mt-4 font-weight-bold" for="text">Заголовок:</label>
-            <input type="text" id="text" class="form-control" name="title" th:value="${post.title}"/>
+            <input type="text" id="text" class="form-control" th:field="*{title}" th:value="${post.title}"/>
+            <span class="error text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
         </div>
         <div class="form-group">
             <label class="font-weight-bold" for="riba">Рыба:</label>
@@ -46,21 +47,26 @@
                     <option th:selected="${fish.id == post.fish.id}" th:value="${fish.id}" th:text="${fish.name}"/>
                 </div>
             </select>
-            <button formaction="/addFish" formmethod="get" class="form-control btn btn-outline-success">Добавить новую
-                рыбу
+            <button formaction="/addFish" formmethod="get" class="form-control btn btn-outline-success">
+                Добавить новую рыбу
             </button>
         </div>
         <div class="form-group">
             <label class="font-weight-bold" for="anons">Анонс:</label>
-            <input type="text" name="anons" class="form-control" id="anons"
+            <input type="text" th:field="*{anons}" class="form-control" id="anons"
                    placeholder="Анонс" th:value="${post.anons}"/>
+            <span class="error text-danger" th:if="${#fields.hasErrors('anons')}" th:errors="*{anons}"></span>
         </div>
         <div class="form-group">
             <label class="font-weight-bold" for="full_text">Содержание:</label>
-            <textarea name="full_text" class="form-control" id="full_text"
+            <textarea th:field="*{full_text}" class="form-control" id="full_text"
                       placeholder="Содержание" th:text="${post.full_text}"></textarea>
+            <span class="error text-danger" th:if="${#fields.hasErrors('full_text')}" th:errors="*{full_text}"></span>
         </div>
-        <input type="hidden" name="id" th:value="${post.id}"/>
+        <input type="hidden" th:field="*{id}" th:value="${post.id}"/>
+        <input type="hidden" th:value="${post.fish}" th:field="*{fish}">
+        <input type="hidden" th:value="${post.fish.id}" th:field="*{fish.id}">
+
         <p><input class="btn btn-primary" type="submit" formaction="/editPost" formmethod="post" value="Сохранить"></p>
     </form>
 </content>

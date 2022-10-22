@@ -8,10 +8,13 @@ import com.example.Blog.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,8 +26,9 @@ public class fishController {
     private FishRepository fishRepository;
 
     @GetMapping("/addFish")
-    public String toAddFishForm(Model model){
+    public String toAddFishForm(Model model) {
 
+        model.addAttribute("fish", new Fish());
         return "addFish";
     }
 
@@ -34,13 +38,12 @@ public class fishController {
 
         Iterable<Fish> fish = new ArrayList<Fish>();
 
-        if(nameFish != null && nameFish != "") {
-            if(exactSearch != null && exactSearch == true)
+        if (nameFish != null && nameFish != "") {
+            if (exactSearch != null && exactSearch == true)
                 fish = fishRepository.findByName(nameFish);
             else
                 fish = fishRepository.findByNameContains(nameFish);
-        }
-        else
+        } else
             fish = fishRepository.findAll();
 
         model.addAttribute("fishes", fish);
@@ -58,7 +61,7 @@ public class fishController {
     }
 
     @PostMapping("/fish/editFishPage")
-    public String toEditPostPage(@RequestParam long id, Model model){
+    public String toEditPostPage(@RequestParam long id, Model model) {
 
         Fish fish = fishRepository.findById(id).get();
         model.addAttribute("fish", fish);
@@ -67,29 +70,31 @@ public class fishController {
     }
 
     @PostMapping("/editFish")
-    public String toPostAfterEdit(@RequestParam long id,
-                              @RequestParam String name,
-                              @RequestParam double averageWeight,
-                              @RequestParam int iq,
-                              @RequestParam(required = false) Boolean redBook,
-                              @RequestParam String color, Model model){
+    public String toPostAfterEdit(@ModelAttribute("fish")
+                                  @Valid Fish fish,
+                                  BindingResult bindingResult, Model model) {
 
-        Fish fish = fishRepository.findById(id).get();
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("fish", fish);
+            return "editFish";
+        }
 
-        fish.setName(name);
-        fish.setAverageWeight(averageWeight);
-        fish.setIq(iq);
-        fish.setRedBook(redBook == null ? false : redBook);
-        fish.setColor(color);
+        Fish _fish = fishRepository.findById(fish.getId()).get();
 
-        fishRepository.save(fish);
+        _fish.setName(fish.getName());
+        _fish.setAverageWeight(fish.getAverageWeight());
+        _fish.setIq(fish.getIq());
+        _fish.setRedBook(fish.getRedBook() != true ? false : fish.getRedBook());
+        _fish.setColor(fish.getColor());
 
-        return "redirect:/selectedFish?id="+String.valueOf(id);
+        fishRepository.save(_fish);
+
+        return "redirect:/selectedFish?id=" + String.valueOf(_fish.getId());
     }
 
     @PostMapping("/fish/delete")
     public String deletePost(@RequestParam long id,
-                             Model model){
+                             Model model) {
 
         Fish fish = fishRepository.findById(id).get();
         fishRepository.delete(fish);
@@ -98,14 +103,22 @@ public class fishController {
     }
 
     @PostMapping("/createFish")
-    public String toMainAfterCreateFish(@RequestParam String name,
-                                    @RequestParam double averageWeight,
-                                    @RequestParam int iq,
-                                    @RequestParam(required = false) Boolean redBook,
-                                    @RequestParam String color, Model model) {
+    public String toMainAfterCreateFish(@ModelAttribute("fish")
+                                        @Valid Fish fish,
+                                        BindingResult bindingResult, Model model) {
 
-        Fish fish = new Fish(name, averageWeight, iq, redBook == null ? false : redBook, color);
-        fishRepository.save(fish);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("fish", fish);
+            return "addFish";
+        }
+
+        Fish _fish = new Fish(fish.getName(),
+                fish.getAverageWeight(),
+                fish.getIq(),
+                fish.getRedBook() != true ? false : fish.getRedBook(),
+                fish.getColor());
+
+        fishRepository.save(_fish);
 
         return "redirect:/addPost";
     }

@@ -71,33 +71,48 @@
     </div>
 
     <hr/>
-    <form>
-        <input type="hidden" th:value="${post.id}" name="post_id">
-        <textarea placeholder="Текст комментария" class="form-control" name="text"></textarea><br>
+    <form th:object="${comment}">
+        <input type="hidden" th:value="${post.id}" name="id_post">
+        <textarea placeholder="Текст комментария" class="form-control" th:field="*{text}"></textarea>
+        <span class="error text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></span><br>
         <input type="submit" formaction="/createComment" formmethod="post" class="btn btn-primary">
     </form>
-
-
     <hr/>
-    <p class="font-weight-bold">Комментарии: </p>
+
+
+    <p class="font-weight-bold ">Комментарии: </p>
     <div th:each="comment : ${comments}">
-        <p th:text="${comment.text}"></p>
-        <span class="font-weight-light" th:text="${comment.dateOfPost}"></span>
-        <br>
+        <div class="container">
+            <div class="row justify-content-between mb-2">
+
+                <div class="col-10 d-flex align-items-start flex-column">
+                    <p class="mb-auto" th:text="${comment.text}"></p>
+                    <span class="font-weight-light" th:text="${comment.dateOfPost}"></span>
+                </div>
+
+                <div class="col-2 my-auto">
+                    <p class="text-center my-auto">
+                        <img src="/images/fishPhoto/fishExample.jpg" class="rounded img-fluid" alt="...">
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
         <div class="btn-group">
             <form action="/comment/editCommentPage" method="post" class="pr-3">
                 <input type="hidden" name="id_comment" th:value="${comment.id}">
                 <input value="Редактировать" type="submit" class="btn btn-outline-primary">
             </form>
             <form action="comment/delete" method="post">
-                <input type="hidden" name="comment_id" th:value="${comment.id}">
-                <input type="hidden" name="post_id" th:value="${post.id}">
+                <input type="hidden" name="id_comment" th:value="${comment.id}">
+                <input type="hidden" name="id_post" th:value="${post.id}">
                 <input value="Удалить" type="submit" class="btn btn-outline-danger">
             </form>
         </div>
-
         <hr/>
     </div>
+
 </content>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

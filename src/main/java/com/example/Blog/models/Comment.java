@@ -1,6 +1,12 @@
 package com.example.Blog.models;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 
 @Entity
@@ -19,7 +25,18 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String photo;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] photo;
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    @NotNull
+    @NotEmpty(message = "Комментарий должен быть не пустым!")
+    @Size(min = 5, max = 250, message = "Напишите комментарий на 5-250 символов")
     private String text;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfPost;
@@ -30,6 +47,19 @@ public class Comment {
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     private Post post;
 
+    //    public void setPhoto(byte[] photo) {
+//        this.photo = photo;
+//    }
+//
+//    @Transient
+//    private String normalPhoto;
+//    public String getNormalPhoto() throws UnsupportedEncodingException {
+//        byte[] encodeBase64 = Base64.encodeBase64(getPhoto());
+//        String base64Encoded = new String(encodeBase64, "UTF-8");
+//        return base64Encoded;
+//    }
+
+
     public long getId() {
         return id;
     }
@@ -38,13 +68,7 @@ public class Comment {
         this.id = id;
     }
 
-    public String getPhoto() {
-        return photo;
-    }
 
-    public void setPhoto(String photo) {
-        this.photo = photo;
-    }
 
     public String getText() {
         return text;

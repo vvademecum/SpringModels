@@ -1,6 +1,7 @@
 package com.example.Blog.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Entity
@@ -21,12 +22,24 @@ public class Fish {
     private Long id;
     @OneToMany(mappedBy = "fish", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Post> postList;
+    @NotBlank(message = "Поле не должно быть пустым")
+    @Size(min = 1, max = 100, message = "Поле должно иметь размер от 1 до 100 символов")
     private String name;
-    private double averageWeight;
-    private int iq;
-    private boolean redBook;
-    private String color;
 
+    @NotNull
+    @Positive(message = "Значение должно быть положительным")
+    private double averageWeight;
+
+    @NotNull
+    @Max(value = 200, message = "Значение должно быть не более 200")
+    @PositiveOrZero(message = "Значение должно быть положительным или равно нулю")
+    private int iq;
+
+    @NotNull(message = "значение не должно быть null")
+    private boolean redBook;
+    @NotBlank(message = "Поле не должно быть пустым")
+    @Size(min = 1, max = 50, message = "Поле должно иметь размер от 1 до 50 символов")
+    private String color;
 
     public Long getId() {
         return id;
