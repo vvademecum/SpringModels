@@ -3,13 +3,17 @@ package com.example.Blog.controllers;
 import com.example.Blog.models.Comment;
 import com.example.Blog.models.Fish;
 import com.example.Blog.models.Post;
+import com.example.Blog.models.User;
 import com.example.Blog.repo.CommentRepository;
 import com.example.Blog.repo.PostRepository;
+import com.example.Blog.repo.UserRepository;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.Banner;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +42,14 @@ public class commentController {
     private CommentRepository commentRepository;
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private UserRepository userRepository;
+    public User getAuthUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = userRepository.findByUsername(authentication.getName());
+
+        return user;
+    }
 
     @PostMapping("/createComment")
     public String createComment(@ModelAttribute("comment")
@@ -55,7 +67,7 @@ public class commentController {
         }
 
         Post post = postRepository.findById(id_post).get();
-        Comment _comment = new Comment(comment.getText().trim(), new Date(), 0, 0, post);
+        Comment _comment = new Comment(comment.getText().trim(), new Date(), 0, 0, post, getAuthUser());
         commentRepository.save(_comment);
 
         return "redirect:/selectedPost?id=" + String.valueOf(id_post);
@@ -100,6 +112,7 @@ public class commentController {
 
         Comment _comment = commentRepository.findById(comment.getId()).get();
         _comment.setText(comment.getText());
+        _comment.setUser(getAuthUser());
 
 //        if (photo != null) {
 ////            String uuid = UUID.randomUUID().toString().replaceAll("-", "");

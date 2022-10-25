@@ -11,12 +11,14 @@ import java.util.Date;
 
 @Entity
 public class Comment {
-    public Comment(String text, Date dateOfPost, int likes, int views, Post post) {
+
+    public Comment(String text, Date dateOfPost, int likes, int views, Post post, User user) {
         this.text = text;
         this.dateOfPost = dateOfPost;
         this.likes = likes;
         this.views = views;
         this.post = post;
+        this.user = user;
     }
 
     public Comment() {
@@ -25,27 +27,24 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-
     @Lob
     @Basic(fetch = FetchType.LAZY)
     private byte[] photo;
-
-    public byte[] getPhoto() {
-        return photo;
-    }
-
     @NotNull
     @NotEmpty(message = "Комментарий должен быть не пустым!")
     @Size(min = 5, max = 250, message = "Напишите комментарий на 5-250 символов")
     private String text;
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfPost;
+    @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    private Post post;
     private int likes;
     private int views;
 
     @ManyToOne
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
-    private Post post;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
     //    public void setPhoto(byte[] photo) {
 //        this.photo = photo;
@@ -58,7 +57,20 @@ public class Comment {
 //        String base64Encoded = new String(encodeBase64, "UTF-8");
 //        return base64Encoded;
 //    }
+    public User getUser() {
+        return user;
+    }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
 
     public long getId() {
         return id;
@@ -67,8 +79,6 @@ public class Comment {
     public void setId(long id) {
         this.id = id;
     }
-
-
 
     public String getText() {
         return text;

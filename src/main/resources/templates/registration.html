@@ -32,35 +32,25 @@
     </div>
 </nav>
 
-<content class="container d-flex flex-column align-items-right mt-4">
-    <a class="btn btn-outline-danger" href="/fishes">< Назад</a>
-
-    <h2 class="pt-4" th:text="${fish.name}"></h2>
-    <p class="font-weight-bold lead text-danger" th:if="${fish.redBook}">
-        <label>Вымирающий вид</label>
-    </p>
-    <p class="font-weight-bold">Средний вес:
-        <label class="font-weight-normal" th:text="${fish.averageWeight}"></label>
-    </p>
-    <p class="font-weight-bold">IQ:
-        <label class="font-weight-normal" th:text="${fish.iq}"></label>
-    </p>
-    <p class="font-weight-bold">Цвет:
-        <label class="font-weight-normal" th:text="${fish.color}"></label>
-    </p>
-
-    <div class="btn-group" th:if="${entitled || isAdmin}">
-        <form th:action="@{/fish/editFishPage}" method="post" class="pr-3">
-            <input type="hidden" th:value="${fish.id}" name="id">
-            <input value="Редактировать" type="submit" class="btn btn-outline-primary">
-        </form>
-        <form th:action="@{/fish/delete}" method="post">
-            <input type="hidden" th:value="${fish.id}" name="id">
-            <input value="Удалить" type="submit" class="btn btn-outline-danger">
-        </form>
-    </div>
+<div th:if="${#messages}">
+    <p th:text="${message}"></p>
+</div>
+Регистрация нового пользователя
+<form th:action="@{/registration}" method="post">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input type="submit" value="Sign In"/></div>
 
 
-</content>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 </html>

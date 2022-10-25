@@ -48,9 +48,22 @@
                     <option th:value="${fish.id}" th:text="${fish.name}"/>
                 </div>
             </select>
-            <button formaction="/addFish" formmethod="get" class="form-control btn btn-outline-success">Добавить новую
-                рыбу
-            </button>
+
+            <div class="lead fs-7 d-inline" th:each="fish : ${postFishes}">
+                <p class="lead fs-7 d-inline p-2" th:text="${fish.name}"></p>
+                <p class="lead fs-7 d-inline"> | </p>
+            </div>
+
+            <div class="form-control btn-group mb-4">
+                <button formaction="/addFishToList" class="form-control btn btn-success">
+                    Добавить рыбу в пост
+                </button>
+                <button formaction="/addFish" formmethod="get" class="form-control btn btn-outline-success">
+                    Добавить новую рыбу
+                </button>
+            </div>
+
+
         </div>
         <div class="form-group">
             <label class="font-weight-bold" for="anons">Анонс:</label>
@@ -65,7 +78,7 @@
             <span class="error text-danger" th:if="${#fields.hasErrors('full_text')}" th:errors="*{full_text}"></span>
         </div>
         <input type="hidden" th:value="${post.id}" th:field="*{id}">
-        <input type="hidden" th:value="${post.fish}" th:field="*{fish}">
+        <!--        <input type="hidden" th:value="${post.fish}" th:field="*{fish}">-->
         <p><input class="btn btn-primary" type="submit" formaction="/createPost" formmethod="post"
                   value="Создать статью"></p>
     </form>

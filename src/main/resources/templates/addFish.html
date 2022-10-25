@@ -62,9 +62,49 @@
             <span class="error text-danger" th:if="${#fields.hasErrors('color')}"
                   th:errors="*{color}"></span>
         </div>
+        <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-3 mb-3">
+            <input type="checkbox" name="isOnSale" class="custom-control-input" id="InSale"
+                   th:checked="${fish.OnSale != null}">
+            <label class="custom-control-label" for="InSale">В продаже</label>
+        </div>
+
+        <div name="onSaleForm" th:object="${onSale}">
+            <div class="form-group">
+                <label class="mt-3 font-weight-bold" for="price">Цена:</label>
+                <input type="number" th:field="*{price}" id="price" class="form-control" placeholder="Цена"
+                       th:value="${onSale.price}"/>
+                <!--                <span class="error text-danger" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>-->
+            </div>
+            <div class="form-group">
+                <label class="mt-3 font-weight-bold" for="phoneNum">Контактный номер телефона:</label>
+                <input type="text" th:field="*{contactPhoneNumber}" id="phoneNum" class="form-control"
+                       placeholder="Контактный номер телефона"
+                       th:value="${onSale.contactPhoneNumber}"/>
+                <!--                <span class="error text-danger" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>-->
+            </div>
+        </div>
+
         <p><input class="btn btn-primary" type="submit" formaction="/createFish" formmethod="post"
                   value="Добавить рыбу"></p>
     </form>
 </content>
+
+<script>
+    var checkbox = document.querySelector("input[name=isOnSale]");
+    var div = document.querySelector("div[name=onSaleForm]");
+    if(checkbox.checked){
+        div.style.display = "block";
+    } else{
+        div.style.display = "none";
+
+    }
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            div.style.display = "block";
+        } else {
+            div.style.display = "none";
+        }
+    });
+</script>
 </body>
 </html>

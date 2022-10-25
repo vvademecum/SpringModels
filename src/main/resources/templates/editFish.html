@@ -40,7 +40,6 @@
                    th:value="${fish.name}"/>
             <span class="error text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </div>
-
         <div class="form-group">
             <label class="mt-2 font-weight-bold" for="averageWeight">Средний вес:</label>
             <input type="number" step="0.1" th:field="*{averageWeight}" id="averageWeight" class="form-control"
@@ -49,28 +48,69 @@
             <span class="error text-danger" th:if="${#fields.hasErrors('averageWeight')}"
                   th:errors="*{averageWeight}"></span>
         </div>
-
         <div class="form-group mb-0 pb-0">
             <label class="mt-2 mb-0 font-weight-bold" for="iq">IQ:</label>
             <input type="number" th:field="*{iq}" id="iq" class="form-control" placeholder="IQ" th:value="${fish.iq}"/>
             <span class="error text-danger" th:if="${#fields.hasErrors('iq')}" th:errors="*{iq}"></span>
         </div>
-
         <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-3">
             <input type="checkbox" th:field="*{redBook}" class="custom-control-input" id="redBook"
                    th:checked="${fish.redBook}">
             <label class="custom-control-label" for="redBook">Вымирающий вид</label>
         </div>
-
         <div class="form-group">
             <label class="mt-3 font-weight-bold" for="color">Цвет:</label>
             <input type="text" th:field="*{color}" id="color" class="form-control" placeholder="Цвет"
                    th:value="${fish.color}"/>
             <span class="error text-danger" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
         </div>
+        <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-3 mb-3">
+            <input type="checkbox" name="isOnSale" class="custom-control-input" id="InSale"
+                   th:checked="${fish.OnSale != null}">
+            <label class="custom-control-label" for="InSale">В продаже</label>
+        </div>
+
+        <div name="onSaleForm" th:object="${onSale}">
+            <div class="form-group">
+                <label class="mt-3 font-weight-bold" for="price">Цвет:</label>
+                <input type="number" th:field="*{price}" id="price" class="form-control" placeholder="Цвет"
+                       th:value="${onSale.price}"/>
+                <!--                <span class="error text-danger" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>-->
+            </div>
+            <div class="form-group">
+                <label class="mt-3 font-weight-bold" for="phoneNum">Цвет:</label>
+                <input type="text" th:field="*{contactPhoneNumber}" id="phoneNum" class="form-control"
+                       placeholder="Цвет"
+                       th:value="${onSale.contactPhoneNumber}"/>
+                <!--                <span class="error text-danger" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>-->
+            </div>
+<!--            <input type="hidden" th:field="*{id}" th:value="${fish.id}"/>-->
+<!--            <p><input class="btn btn-primary" type="submit" formaction="/editFish" formmethod="post"-->
+<!--                      value="Сохранить данные"></p>-->
+        </div>
+
         <input type="hidden" th:field="*{id}" th:value="${fish.id}"/>
         <p><input class="btn btn-primary" type="submit" formaction="/editFish" formmethod="post" value="Сохранить"></p>
     </form>
+
 </content>
+
+<script>
+    var checkbox = document.querySelector("input[name=isOnSale]");
+    var div = document.querySelector("div[name=onSaleForm]");
+    if(checkbox.checked){
+        div.style.display = "block";
+    } else{
+        div.style.display = "none";
+
+    }
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            div.style.display = "block";
+        } else {
+            div.style.display = "none";
+        }
+    });
+</script>
 </body>
 </html>

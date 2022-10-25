@@ -9,33 +9,53 @@ import java.util.Optional;
 
 @Entity
 public class Post {
-    public Post(String title, String anons, String full_text, Fish fish) {
+    public Post(String title, String anons, String full_text, List<Fish> postFishes, User user) {
         this.title = title;
         this.anons = anons;
         this.full_text = full_text;
-        this.fish = fish;
+        this.postFishes = postFishes;
+        this.user = user;
     }
-    public Post() { }
+
+    public Post() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @NotBlank(message = "Поле не должно быть пустым")
     @Size(min = 10, max = 200, message = "Поле должно иметь размер от 10 до 200 символов")
     private String title;
     @NotBlank(message = "Поле не должно быть пустым")
     @Size(min = 10, max = 200, message = "Поле должно иметь размер от 10 до 200 символов")
     private String anons;
-
     @NotBlank(message = "Поле не должно быть пустым")
     private String full_text;
     @ManyToOne
-    @JoinColumn(name = "fish_id", referencedColumnName = "id")
-    private Fish fish;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
     private int views;
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList;
+    @ManyToMany
+    @JoinTable(name = "post_fish", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "fish_id"))
+    public List<Fish> postFishes;
+
+    public List<Fish> getPostFishes() {
+        return postFishes;
+    }
+
+    public void setPostFishes(List<Fish> postFishes) {
+        this.postFishes = postFishes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
@@ -44,10 +64,6 @@ public class Post {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Fish getFish() {return fish;}
-
-    public void setFish(Fish fish) {this.fish = fish;}
 
     public String getTitle() {
         return title;

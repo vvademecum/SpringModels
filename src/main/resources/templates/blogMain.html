@@ -44,20 +44,28 @@
             <button class="btn btn-outline-success my-2 my-sm-0" formmethod="get" formaction="/" type="submit">Поиск
             </button>
         </form>
+        <form th:action="@{/logout}" method="post">
+            <p th:text="${userName}"></p>
+            <input type="submit" value="Выйти" class="btn btn-primary">
+        </form>
     </div>
 </nav>
 
 <p><h4 class="display-8 p-3">Список статей:</h4></p>
 
 <content class="d-flex p-2 ml-2 flex-column">
-<div th:each="post : ${posts}">
-    <a th:href="@{/selectedPost?id={id}(id=${post.id})}">
-        <h4 class="text-info" th:text="${post.title}"></h4>
-    </a>
-    <p th:text="${post.anons}"></p>
-    <p class="lead fs-7" th:text="${post.fish.name}"></p>
-    <hr/>
-</div>
+    <div th:each="post : ${posts}">
+        <a th:href="@{/selectedPost?id={id}(id=${post.id})}">
+            <h4 class="text-info" th:text="${post.title}"></h4>
+        </a>
+        <p th:text="${post.anons}"></p>
+        <p class="lead fs-7 d-inline"> | </p>
+        <div class="lead fs-7 d-inline" th:each="fish : ${post.postFishes}">
+            <p class="lead fs-7 d-inline p-2" th:text="${fish.name}"></p>
+            <p class="lead fs-7 d-inline"> | </p>
+        </div>
+        <hr/>
+    </div>
 </content>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
