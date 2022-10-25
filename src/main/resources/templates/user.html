@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+    <a class="navbar-brand" href="/">
+        <img src="/images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        FishBlog
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/addPost">Добавить статью</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/fishes">Рыбы)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/rolesControl">Управление пользователями</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<content class="container d-flex flex-column align-items-right mt-4">
+    <a href="/rolesControl" class="btn btn-outline-danger">< Назад</a>
+    <h2 class="pt-4" th:text="${user.username}"></h2>
+
+    <form th:object="${user}">
+        <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-2">
+            <input type="checkbox" name="admin" th:checked="${user.getRoles().toString().contains('ADMIN')}"
+                   class="custom-control-input"
+                   id="admin">
+            <label class="custom-control-label" for="admin">Админ</label>
+        </div>
+        <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-2">
+            <input type="checkbox" name="commentModerator"
+                   th:checked="${user.getRoles().toString().contains('COMMENT_MODERATOR')}"
+                   class="custom-control-input" id="commentModerator">
+            <label class="custom-control-label" for="commentModerator">Модератор комментариев</label>
+        </div>
+        <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-2">
+            <input type="checkbox" name="postModerator"
+                   th:checked="${user.getRoles().toString().contains('POST_MODERATOR')}" class="custom-control-input"
+                   id="postModerator">
+            <label class="custom-control-label" for="postModerator">Модератор постов</label>
+        </div>
+        <div class="custom-control custom-checkbox mr-sm-2 ml-2 mt-2">
+            <input type="checkbox" name="fishModerator"
+                   th:checked="${user.getRoles().toString().contains('FISH_MODERATOR')}" class="custom-control-input"
+                   id="fishModerator">
+            <label class="custom-control-label" for="fishModerator">Модератор рыб</label>
+        </div>
+
+        <input type="hidden" th:value="${user.id}" th:field="*{id}">
+        <p><input class="btn btn-primary mt-3" type="submit" formaction="/rolesControl/editRoles" formmethod="post"
+                  value="Сохранить"></p>
+    </form>
+</content>
+
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+</html>

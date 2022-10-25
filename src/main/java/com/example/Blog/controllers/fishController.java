@@ -79,6 +79,11 @@ public class fishController {
         else
             model.addAttribute("isAdmin", false);
 
+        if (getAuthUser().getRoles().contains(Role.FISH_MODERATOR))
+            model.addAttribute("isFishModerator", true);
+        else
+            model.addAttribute("isFishModerator", false);
+
         if (fish.getUser().equals(getAuthUser()))
             model.addAttribute("entitled", true);
         else

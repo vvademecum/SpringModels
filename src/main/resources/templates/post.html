@@ -52,9 +52,6 @@
     <a href="/" class="btn btn-outline-danger">< Назад</a>
     <h2 class="pt-4" th:text="${post.title}"></h2>
 
-    <!--    <p class="font-weight-bold">Про рыбу:-->
-    <!--        <label class="lead fs-7" th:text="${post.fish.name}"></label>-->
-    <!--    </p>-->
     <p class="font-weight-bold fs-7 d-inline">Про:
         <label class="lead fs-7 d-inline">
             <td class="lead fs-7 d-inline">|</td>
@@ -64,17 +61,12 @@
             </tr>
         </label>
     </p>
-    <!--    <p th:each="fish : ${post.postFishes}">-->
-    <!--        <p class="lead fs-7 d-inline p-2" th:text="${fish.name}"></p>-->
-    <!--        <p class="lead fs-7 d-inline"> | </p>-->
-    <!--    </p>-->
-
 
     <p class="font-weight-bold">Текст поста:<br>
         <label class="font-weight-normal" th:text="${post.full_text}"></label>
     </p>
 
-    <div class="btn-group mb-4" th:if="${entitled || isAdmin}">
+    <div class="btn-group mb-4" th:if="${isPostModerator || entitled || isAdmin}">
         <form th:action="@{/post/editPostPage}" method="post" class="pr-3">
             <input type="hidden" th:value="${post.id}" name="id">
             <input value="Редактировать" type="submit" class="btn btn-outline-primary">
@@ -113,7 +105,7 @@
             </div>
         </div>
 
-        <div class="btn-group" th:if="${authUserId == comment.user.id || isAdmin}">
+        <div class="btn-group" th:if="${authUserId == comment.user.id || isAdmin || isCommentModerator}">
             <form action="/comment/editCommentPage" method="post" class="pr-3">
                 <input type="hidden" name="id_comment" th:value="${comment.id}">
                 <input value="Редактировать" type="submit" class="btn btn-outline-primary">

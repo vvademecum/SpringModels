@@ -1,6 +1,7 @@
 package com.example.Blog.controllers;
 
 import com.example.Blog.models.Post;
+import com.example.Blog.models.Role;
 import com.example.Blog.models.User;
 import com.example.Blog.repo.PostRepository;
 import com.example.Blog.repo.UserRepository;
@@ -31,6 +32,10 @@ public class blogController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByUsername(authentication.getName());
         model.addAttribute("userName", user.getUsername());
+        if (user.getRoles().contains(Role.ADMIN))
+            model.addAttribute("isAdmin", true);
+        else
+            model.addAttribute("isAdmin", false);
 
         if (title != null && title != "") {
             if (exactSearch != null && exactSearch == true)

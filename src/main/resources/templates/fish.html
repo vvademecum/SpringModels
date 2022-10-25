@@ -49,7 +49,7 @@
         <label class="font-weight-normal" th:text="${fish.color}"></label>
     </p>
 
-    <div class="btn-group" th:if="${entitled || isAdmin}">
+    <div class="btn-group" th:if="${entitled || isAdmin || isFishModerator}">
         <form th:action="@{/fish/editFishPage}" method="post" class="pr-3">
             <input type="hidden" th:value="${fish.id}" name="id">
             <input value="Редактировать" type="submit" class="btn btn-outline-primary">

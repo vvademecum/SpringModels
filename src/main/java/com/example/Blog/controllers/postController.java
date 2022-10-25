@@ -81,6 +81,16 @@ public class postController {
         else
             model.addAttribute("isAdmin", false);
 
+        if (getAuthUser().getRoles().contains(Role.POST_MODERATOR))
+            model.addAttribute("isPostModerator", true);
+        else
+            model.addAttribute("isPostModerator", false);
+
+        if (getAuthUser().getRoles().contains(Role.COMMENT_MODERATOR))
+            model.addAttribute("isCommentModerator", true);
+        else
+            model.addAttribute("isCommentModerator", false);
+
         model.addAttribute("authUserId", getAuthUser().getId());
         return "post";
     }

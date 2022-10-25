@@ -38,7 +38,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Comment> commentList;
     @ManyToMany
-    @JoinTable(name = "post_fish", joinColumns = @JoinColumn(name = "post_id"), inverseJoinColumns = @JoinColumn(name = "fish_id"))
+    @JoinTable(name = "post_fish",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "fish_id"))
     public List<Fish> postFishes;
 
     public List<Fish> getPostFishes() {
